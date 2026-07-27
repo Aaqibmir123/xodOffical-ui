@@ -18,7 +18,7 @@ export default function Topbar() {
           </div>
           <a href="mailto:info@xcdgoc.com" className="flex items-center gap-2 hover:text-amber-400 transition">
             <Mail className="w-4 h-4 text-amber-500" />
-            <span>info@xcdgoc.com</span>
+            <span>xcdgoc@gmail.com</span>
           </a>
           <a href="tel:+15471234567" className="flex items-center gap-2 hover:text-amber-400 transition">
             <Phone className="w-4 h-4 text-amber-500" />
