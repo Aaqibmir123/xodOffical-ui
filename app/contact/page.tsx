@@ -1,9 +1,8 @@
-import Footer from "@/components/layout/Footer";
 import { MapPin, Phone, Mail, Clock, Send } from "lucide-react";
 
 export default function Contact() {
   return (
-    <main className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white">
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-[#141414] to-[#0f0f0f] text-white py-20">
         <div className="max-w-7xl mx-auto px-4 md:px-12">
@@ -175,8 +174,6 @@ export default function Contact() {
           </div>
         </div>
       </section>
-
-      <Footer />
-    </main>
+    </div>
   );
 }
