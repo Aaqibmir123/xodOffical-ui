@@ -1,19 +1,26 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useEffect, useMemo, useState } from "react";
+import { Check, Clock3, Mail, MapPin, Phone, Trash2, UserRound } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { contactAPI, type ContactMessage } from "@/lib/api";
+
+const formatDate = (date: string) => new Intl.DateTimeFormat("en-CA", { dateStyle: "medium", timeStyle: "short" }).format(new Date(date));
 
 export default function AdminContact() {
-  return (
-    <div className="space-y-6">
-      <h1 className="text-3xl font-bold text-white">Contact Us</h1>
-      <Card className="bg-white/10 backdrop-blur-md border-white/20">
-        <CardHeader>
-          <CardTitle className="text-white">Contact Management</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-gray-300">Contact page content will be added here.</p>
-        </CardContent>
-      </Card>
-    </div>
-  );
+  const [messages, setMessages] = useState<ContactMessage[]>([]);
+  const [filter, setFilter] = useState<"all" | "new" | "read">("all");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  const loadMessages = async () => { const result = await contactAPI.getAll(); if (result.success) setMessages(result.data); else throw new Error(); };
+  useEffect(() => { const fetchMessages = async () => { try { await loadMessages(); } catch { setError("Unable to load contact messages. Please sign in again and try once more."); } finally { setLoading(false); } }; void fetchMessages(); }, []);
+
+  const filteredMessages = useMemo(() => filter === "all" ? messages : messages.filter((message) => message.status === filter), [filter, messages]);
+  const newCount = messages.filter((message) => message.status === "new").length;
+  const updateStatus = async (message: ContactMessage) => { try { const result = await contactAPI.updateStatus(message._id, message.status === "new" ? "read" : "new"); if (!result.success) throw new Error(); setMessages((current) => current.map((item) => item._id === message._id ? result.data : item)); } catch { setError("Unable to update this message."); } };
+  const deleteMessage = async (id: string) => { if (!window.confirm("Delete this contact message?")) return; try { const result = await contactAPI.remove(id); if (!result.success) throw new Error(); setMessages((current) => current.filter((message) => message._id !== id)); } catch { setError("Unable to delete this message."); } };
+
+  return <div className="p-6 md:p-8 space-y-6 max-w-7xl mx-auto"><div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-4"><div><h1 className="text-3xl font-extrabold text-slate-900">Contact Inquiries</h1><p className="mt-1 text-sm text-slate-500">Review messages submitted through your website contact form.</p></div><div className="rounded-full bg-amber-100 px-4 py-2 text-sm font-semibold text-amber-800">{newCount} new {newCount === 1 ? "message" : "messages"}</div></div>{error && <p role="alert" className="rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">{error}</p>}<div className="flex flex-wrap gap-2">{(["all", "new", "read"] as const).map((option) => <Button key={option} variant={filter === option ? "default" : "outline"} onClick={() => setFilter(option)} className={filter === option ? "bg-slate-900 hover:bg-slate-800 capitalize" : "capitalize"}>{option}{option === "new" && ` (${newCount})`}</Button>)}</div>{loading ? <p className="py-16 text-center text-slate-500">Loading contact messages...</p> : filteredMessages.length === 0 ? <Card><CardContent className="py-16 text-center text-slate-500">No {filter === "all" ? "contact messages" : filter} messages found.</CardContent></Card> : <div className="grid grid-cols-1 xl:grid-cols-2 gap-5">{filteredMessages.map((message) => <Card key={message._id} className={`border shadow-sm ${message.status === "new" ? "border-amber-300 bg-amber-50/30" : "border-slate-200"}`}><CardContent className="p-5 md:p-6"><div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4"><div className="flex items-center gap-3"><div className="flex h-11 w-11 items-center justify-center rounded-full bg-slate-900 text-sm font-bold text-white">{message.name.split(" ").map((part) => part[0]).join("").slice(0, 2).toUpperCase()}</div><div><h2 className="font-bold text-slate-900">{message.name}</h2><p className="flex items-center gap-1 text-xs text-slate-500"><Clock3 className="w-3.5 h-3.5" />{formatDate(message.createdAt)}</p></div></div><span className={`w-fit rounded-full px-2.5 py-1 text-xs font-semibold capitalize ${message.status === "new" ? "bg-amber-100 text-amber-800" : "bg-emerald-100 text-emerald-700"}`}>{message.status}</span></div><p className="mt-5 whitespace-pre-wrap text-sm leading-relaxed text-slate-700">{message.message}</p><div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-2 border-t border-slate-100 pt-4 text-sm text-slate-600"><a href={`mailto:${message.email}`} className="flex min-w-0 items-center gap-2 hover:text-amber-700"><Mail className="w-4 h-4 shrink-0" /><span className="truncate">{message.email}</span></a><a href={`tel:${message.phone}`} className="flex min-w-0 items-center gap-2 hover:text-amber-700"><Phone className="w-4 h-4 shrink-0" /><span className="truncate">{message.phone}</span></a>{message.address && <p className="sm:col-span-2 flex items-start gap-2"><MapPin className="mt-0.5 w-4 h-4 shrink-0" /><span>{message.address}</span></p>}</div><div className="mt-5 flex flex-wrap gap-2"><Button variant="outline" onClick={() => updateStatus(message)}>{message.status === "new" ? <><Check className="mr-1.5" /> Mark as read</> : <><UserRound className="mr-1.5" /> Mark as new</>}</Button><Button variant="destructive" onClick={() => deleteMessage(message._id)}><Trash2 className="mr-1.5" /> Delete</Button></div></CardContent></Card>)}</div>}</div>;
 }

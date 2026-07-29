@@ -156,4 +156,39 @@
   .animation-delay-4000 {
     animation-delay: 4s;
   }
+
+  .scroll-reveal {
+    opacity: 0;
+    transition: opacity 850ms ease, transform 850ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .reveal-up { transform: translateY(42px); }
+  .reveal-left { transform: translateX(-70px); }
+  .reveal-right { transform: translateX(70px); }
+  .reveal-scale { transform: scale(0.92); }
+
+  .scroll-reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .hover-lift {
+    transition: transform 300ms ease, box-shadow 300ms ease, border-color 300ms ease;
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-6px);
+  }
+
+  @keyframes soft-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgb(245 158 11 / 45%); }
+    50% { box-shadow: 0 0 0 12px rgb(245 158 11 / 0%); }
+  }
+
+  .animate-soft-pulse { animation: soft-pulse 2.5s infinite; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: 0.01ms !important; }
+    .scroll-reveal { opacity: 1; transform: none; }
+  }
 }

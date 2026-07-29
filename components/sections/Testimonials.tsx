@@ -1,58 +1,56 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { Star } from "lucide-react";
+"use client";
 
-const reviews = [
-  {
-    quote: "XCDGOC PVT LTD has been a game changer for our business. Their 24/7 support and load management is unmatched.",
-    name: "Jaspreet Singh",
-    role: "Owner Operator",
-    avatar: "/images/avatar-1.jpg",
-  },
-  {
-    quote: "Professional team, great communication and consistent loads. Highly recommended dispatch service.",
-    name: "Gurpreet Kaur",
-    role: "Fleet Owner",
-    avatar: "/images/avatar-2.jpg",
-  },
-  {
-    quote: "Been working with them for years. They truly care about your business growth.",
-    name: "Harmanpreet Gill",
-    role: "Owner Operator",
-    avatar: "/images/avatar-3.jpg",
-  },
-];
+import { useEffect, useState } from "react";
+import { Quote, Star } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { sectionContentAPI, testimonialsAPI, type SectionContent, type Testimonial } from "@/lib/api";
+import ScrollReveal from "@/components/ScrollReveal";
+
+const initials = (name: string) => name.split(" ").filter(Boolean).map((part) => part[0]).join("").slice(0, 2).toUpperCase();
+const defaultContent: SectionContent = { label: "Testimonials", heading: "What Our Clients Say", description: "Feedback from companies that trust our dispatch team." };
 
 export default function Testimonials() {
-  return (
-    <section id="testimonials" className="py-20 bg-zinc-50 text-zinc-900 border-t border-zinc-200">
-      <div className="max-w-7xl mx-auto px-4 md:px-12 text-center">
-        <p className="text-amber-600 font-semibold tracking-widest text-sm uppercase mb-2">Testimonials</p>
-        <h2 className="text-3xl md:text-4xl font-extrabold uppercase mb-12">What Our Clients Say</h2>
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  const [content, setContent] = useState<SectionContent>(defaultContent);
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {reviews.map((item, index) => (
-            <Card key={index} className="bg-white border border-zinc-200 shadow-sm p-6 text-left flex flex-col justify-between">
-              <CardContent className="p-0">
-                <div className="flex gap-1 text-amber-400 mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-amber-400" />
-                  ))}
-                </div>
-                <p className="text-zinc-700 text-sm italic mb-6 leading-relaxed">"{item.quote}"</p>
-              </CardContent>
-              <div className="flex items-center gap-3 pt-4 border-t border-zinc-100">
-                <div className="w-10 h-10 rounded-full bg-zinc-300 overflow-hidden">
-                  <img src={item.avatar} alt={item.name} className="w-full h-full object-cover" />
-                </div>
-                <div>
-                  <h4 className="font-bold text-sm">{item.name}</h4>
-                  <p className="text-xs text-zinc-500">{item.role}</p>
-                </div>
-              </div>
-            </Card>
+  useEffect(() => {
+    const fetchTestimonials = async () => {
+      try {
+        const [testimonialsResult, contentResult] = await Promise.all([testimonialsAPI.getAll(), sectionContentAPI.get("testimonials")]);
+        if (testimonialsResult.success) setTestimonials(testimonialsResult.data);
+        if (contentResult.success) setContent(contentResult.data);
+      } catch (error) {
+        console.error("Error fetching testimonials:", error);
+      }
+    };
+    void fetchTestimonials();
+  }, []);
+
+  if (!testimonials.length) return null;
+
+  return (
+    <section id="testimonials" className="border-t border-zinc-200 bg-white py-16 text-zinc-900 md:py-20">
+      <ScrollReveal className="mx-auto max-w-7xl px-4 md:px-12">
+        <div className="mx-auto max-w-2xl text-center">
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-amber-600">{content.label}</p>
+          <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-zinc-950 md:text-4xl">{content.heading}</h2>
+          <p className="mt-3 text-sm leading-relaxed text-zinc-600">{content.description}</p>
+        </div>
+
+        <div className={`mx-auto mt-8 grid gap-5 ${testimonials.length === 1 ? "max-w-md grid-cols-1" : "max-w-6xl grid-cols-1 md:grid-cols-2 xl:grid-cols-3"}`}>
+          {testimonials.map((testimonial) => (
+            <div key={testimonial._id}>
+              <Card className="hover-lift rounded-xl border border-zinc-200 bg-zinc-50 p-5 text-left shadow-sm hover:border-amber-300 hover:bg-white hover:shadow-lg">
+                <CardContent className="p-0">
+                  <div className="flex items-start justify-between"><div><p className="mb-2 text-[10px] font-bold uppercase tracking-[0.16em] text-zinc-400">Rating</p><div className="flex gap-1 text-amber-400" aria-label={`${testimonial.rating} out of 5 stars`}>{Array.from({ length: 5 }, (_, ratingIndex) => <Star key={ratingIndex} className={`w-4 h-4 ${ratingIndex < testimonial.rating ? "fill-amber-400" : "text-zinc-200"}`} />)}</div></div><Quote className="w-6 h-6 text-amber-200" /></div>
+                  <div className="my-4"><p className="mb-1.5 text-[10px] font-bold uppercase tracking-[0.16em] text-zinc-400">Client Review</p><p className="text-sm italic leading-relaxed text-zinc-700">&ldquo;{testimonial.description}&rdquo;</p></div>
+                  <div className="flex items-center gap-3 border-t border-zinc-100 pt-4"><div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-100 text-xs font-black text-amber-800">{initials(testimonial.clientName)}</div><div><p className="text-[10px] font-bold uppercase tracking-[0.16em] text-zinc-400">Client Name</p><h4 className="mt-0.5 text-sm font-extrabold text-zinc-900">{testimonial.clientName}</h4></div></div>
+                </CardContent>
+              </Card>
+            </div>
           ))}
         </div>
-      </div>
+      </ScrollReveal>
     </section>
   );
 }

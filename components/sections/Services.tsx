@@ -1,5 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Truck, MapPin, Layers, ShoppingCart, ShieldAlert, CheckCircle2 } from "lucide-react";
+import ScrollReveal from "@/components/ScrollReveal";
 
 const services = [
   {
@@ -38,7 +39,7 @@ const services = [
 export default function Services() {
   return (
     <section className="py-20 bg-zinc-50 text-zinc-900">
-      <div className="max-w-7xl mx-auto px-4 md:px-12 text-center">
+      <ScrollReveal className="max-w-7xl mx-auto px-4 md:px-12 text-center">
         <p className="text-amber-600 font-semibold tracking-widest text-sm uppercase mb-2">What We Offer</p>
         <h2 className="text-3xl md:text-4xl font-extrabold uppercase mb-12">
           Our Complete Dispatch Services & Solutions
@@ -48,19 +49,21 @@ export default function Services() {
           {services.map((item, index) => {
             const IconComponent = item.icon;
             return (
-              <Card key={index} className="border border-zinc-200 shadow-sm hover:shadow-md transition bg-white text-left p-6 flex flex-col justify-between">
-                <CardContent className="p-0">
-                  <div className="w-12 h-12 rounded-lg bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600 mb-6">
-                    <IconComponent className="w-6 h-6" />
-                  </div>
-                  <h3 className="font-bold text-xl mb-3">{item.title}</h3>
-                  <p className="text-zinc-600 text-sm leading-relaxed">{item.desc}</p>
-                </CardContent>
-              </Card>
+              <ScrollReveal key={index} direction={index % 2 === 0 ? "left" : "right"} delay={index * 80}>
+                <Card className="hover-lift border border-zinc-200 shadow-sm hover:shadow-xl hover:border-amber-300 bg-white text-left p-6 flex flex-col justify-between">
+                  <CardContent className="p-0">
+                    <div className="w-12 h-12 rounded-lg bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600 mb-6">
+                      <IconComponent className="w-6 h-6" />
+                    </div>
+                    <h3 className="font-bold text-xl mb-3">{item.title}</h3>
+                    <p className="text-zinc-600 text-sm leading-relaxed">{item.desc}</p>
+                  </CardContent>
+                </Card>
+              </ScrollReveal>
             );
           })}
         </div>
-      </div>
+      </ScrollReveal>
     </section>
   );
 }

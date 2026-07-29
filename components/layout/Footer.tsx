@@ -3,11 +3,12 @@
 import Link from "next/link";
 import Image from "next/image";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
+import ScrollReveal from "@/components/ScrollReveal";
 
 export default function Footer() {
   return (
     <footer id="contact" className="bg-[#0f0f0f] text-zinc-400 text-sm border-t border-zinc-800 pt-16 pb-8">
-      <div className="max-w-7xl mx-auto px-4 md:px-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+      <ScrollReveal className="max-w-7xl mx-auto px-4 md:px-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
         {/* Col 1: Brand Info */}
         <div>
           <Link href="/" className="flex items-center mb-4">
@@ -80,7 +81,7 @@ export default function Footer() {
             </div>
           </div>
         </div>
-      </div>
+      </ScrollReveal>
 
       <div className="max-w-7xl mx-auto px-4 md:px-12 pt-6 border-t border-zinc-900 text-center text-xs text-zinc-500">
         © 2026 XCDGOC PVT LTD - Extreme Canada Dispatch Group Of Companies. All Rights Reserved.

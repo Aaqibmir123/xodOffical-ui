@@ -1,23 +1,46 @@
-import { Button } from "@/components/ui/button";
-import { ShieldCheck, Clock, Globe, Award, ArrowRight } from "lucide-react";
+"use client";
+
+import { useEffect, useState } from "react";
+import { ShieldCheck, Clock, Globe, Award } from "lucide-react";
+
+const heroImages = [
+  "/images/truck-hero.jpg",
+  "/images/canada-truck.jpg",
+  "/images/gallery-2.jpg",
+  "/images/gallery-4.jpg",
+];
 
 export default function Hero() {
+  const [activeSlide, setActiveSlide] = useState(0);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setActiveSlide((current) => (current + 1) % heroImages.length);
+    }, 5000);
+
+    return () => window.clearInterval(timer);
+  }, []);
+
   return (
     <section className="relative bg-zinc-950 text-white min-h-[85vh] flex items-center overflow-hidden py-16">
-      {/* Background Image with Overlay */}
-      <div className="absolute inset-0 z-0 opacity-40">
-        <img 
-          src="/images/truck-hero.jpg" 
-          alt="Semi truck on highway" 
-          className="w-full h-full object-cover"
-        />
+      {/* Continuous four-image background carousel */}
+      <div className="absolute inset-0 z-0" aria-hidden="true">
+        {heroImages.map((image, index) => (
+          <div
+            key={image}
+            className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ${
+              index === activeSlide ? "opacity-40" : "opacity-0"
+            }`}
+            style={{ backgroundImage: `url(${image})` }}
+          />
+        ))}
         <div className="absolute inset-0 bg-gradient-to-r from-zinc-950 via-zinc-950/80 to-transparent" />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 md:px-12 relative z-10 w-full">
         <div className="max-w-3xl">
           <p className="text-amber-400 uppercase tracking-widest text-sm font-semibold mb-3">
-            Canada's Leading & Largest Dispatch Service Provider
+            Canada&apos;s Leading & Largest Dispatch Service Provider
           </p>
           <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight uppercase leading-none mb-4">
             Complete Dispatch <br />
@@ -30,6 +53,15 @@ export default function Hero() {
           <p className="text-zinc-300 text-base md:text-lg mb-8 max-w-xl">
             Proudly serving across Canada & <span className="text-white font-semibold">USA</span> with premium dispatch solutions for owner operators & fleet companies since last 08 years.
           </p>
+
+          <div className="flex gap-2 mb-8" aria-label="Hero carousel slides">
+            {heroImages.map((image, index) => (
+              <span
+                key={image}
+                className={`h-1.5 rounded-full transition-all duration-300 ${index === activeSlide ? "w-7 bg-amber-500" : "w-1.5 bg-white/50"}`}
+              />
+            ))}
+          </div>
 
           {/* Metrics Row */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10 border-y border-zinc-800 py-6">
@@ -70,16 +102,6 @@ export default function Hero() {
               </div>
             </div>
           </div>
-
-          {/* Action Buttons */}
-          {/* <div className="flex flex-wrap gap-4">
-            <Button className="bg-amber-500 hover:bg-amber-400 text-black font-bold px-8 py-6 text-base">
-              GET A FREE QUOTE <ArrowRight className="ml-2 w-5 h-5" />
-            </Button>
-            <Button variant="outline" className="border-zinc-700 text-white hover:bg-zinc-800 px-8 py-6 text-base">
-              OUR SERVICES
-            </Button>
-          </div> */}
         </div>
       </div>
     </section>
