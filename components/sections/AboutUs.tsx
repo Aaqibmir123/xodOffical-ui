@@ -38,7 +38,6 @@ export default function AboutUs() {
   const [aboutData, setAboutData] = useState<AboutData>(initialAboutData);
   const [loading, setLoading] = useState(true);
 
-  // Fetch about data from API
   useEffect(() => {
     const fetchAboutData = async () => {
       try {

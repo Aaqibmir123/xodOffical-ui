@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import { Mail, Lock, Eye, EyeOff, LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -32,11 +31,9 @@ export default function LoginPage() {
       const data = await response.json();
 
       if (data.success) {
-        // Store token in localStorage
         localStorage.setItem("token", data.token);
         localStorage.setItem("user", JSON.stringify(data.user));
         
-        // Redirect to admin dashboard
         router.push("/admin/dashboard");
       } else {
         setError(data.message || "Login failed");
@@ -50,7 +47,6 @@ export default function LoginPage() {
 
   return (
     <div className="h-screen w-full relative overflow-hidden">
-      {/* Full Background Truck Image - No crop, cover entire screen */}
       <div 
         className="absolute inset-0"
         style={{
@@ -60,13 +56,10 @@ export default function LoginPage() {
           backgroundRepeat: "no-repeat",
         }}
       >
-        {/* Dark overlay for better text readability */}
         <div className="absolute inset-0 bg-black/40"></div>
       </div>
 
-      {/* Content overlay on truck image */}
       <div className="relative z-10 h-full flex">
-        {/* Left Side - Brand Text */}
         <div className="hidden lg:flex lg:w-1/2 flex-col justify-center px-12">
           <h1 className="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-600 mb-8 drop-shadow-lg" style={{ fontFamily: 'Arial, sans-serif' }}>
             XCDGOC PVT LTD
@@ -76,9 +69,7 @@ export default function LoginPage() {
           </p>
         </div>
 
-        {/* Right Side - Login Form */}
         <div className="w-full lg:w-1/2 flex items-center justify-center p-6 lg:p-12">
-          {/* Login Card - Transparent with strong shadow */}
           <Card className="w-full max-w-md bg-white/60 backdrop-blur-md shadow-2xl rounded-3xl border border-white/30">
             <CardContent className="p-8">
               <div className="text-center mb-6 lg:hidden">
@@ -97,7 +88,6 @@ export default function LoginPage() {
               )}
 
               <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Email Field */}
                 <div className="space-y-2">
                   <label htmlFor="email" className="text-lg font-medium text-white">
                     Email Address
@@ -118,7 +108,6 @@ export default function LoginPage() {
                   </div>
                 </div>
 
-                {/* Password Field */}
                 <div className="space-y-2">
                   <label htmlFor="password" className="text-lg font-medium text-white">
                     Password
@@ -150,7 +139,6 @@ export default function LoginPage() {
                   </div>
                 </div>
 
-                {/* Submit Button */}
                 <Button
                   type="submit"
                   disabled={isLoading}

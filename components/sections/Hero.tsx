@@ -23,7 +23,6 @@ export default function Hero() {
 
   return (
     <section className="relative bg-zinc-950 text-white min-h-[85vh] flex items-center overflow-hidden py-16">
-      {/* Continuous four-image background carousel */}
       <div className="absolute inset-0 z-0" aria-hidden="true">
         {heroImages.map((image, index) => (
           <div
@@ -39,7 +38,7 @@ export default function Hero() {
 
       <div className="max-w-7xl mx-auto px-4 md:px-12 relative z-10 w-full">
         <div className="max-w-3xl">
-          <p className="text-amber-400 uppercase tracking-widest text-sm font-semibold mb-3">
+          <p className="text-amber-400 uppercase tracking-widest text-LG font-semibold mb-3">
             Canada&apos;s Leading & Largest Dispatch Service Provider
           </p>
           <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight uppercase leading-none mb-4">

@@ -78,7 +78,7 @@ export default function Contact() {
               </div>
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <InfoCard icon={<MapPin className="w-5 h-5" />} title="Office Address">100 Consilium Pl, Suite 200<br />Scarborough, ON M1H 3E3</InfoCard>
-                <InfoCard icon={<Phone className="w-5 h-5" />} title="Call Us"><a href="tel:+17501216555" className="hover:text-amber-700">+1 (750) 121-6555</a></InfoCard>
+                <InfoCard icon={<Phone className="w-5 h-5" />} title="Call Us"><a href="tel:+91 7501216555" className="hover:text-amber-700">+1 (750) 121-6555</a></InfoCard>
                 <InfoCard icon={<Mail className="w-5 h-5" />} title="Email Us"><a href="mailto:xcdgoc@gmail.com" className="hover:text-amber-700">xcdgoc@gmail.com</a></InfoCard>
                 <InfoCard icon={<Clock className="w-5 h-5" />} title="Working Hours">24/7 Dispatch Support</InfoCard>
               </div>

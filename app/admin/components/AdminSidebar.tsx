@@ -1,5 +1,4 @@
 "use client";
-
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { 
@@ -35,7 +34,6 @@ export default function AdminSidebar() {
 
   return (
     <>
-      {/* Mobile Menu Button */}
       <button
         onClick={() => setIsMobileOpen(true)}
         className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-gray-800 rounded-lg"
@@ -43,14 +41,12 @@ export default function AdminSidebar() {
         <Menu className="w-6 h-6 text-white" />
       </button>
 
-      {/* Sidebar */}
       <aside className={`
         fixed inset-y-0 left-0 z-40 w-64 bg-gray-900 border-r border-gray-800
         transform transition-transform duration-300 ease-in-out
         ${isMobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
       `}>
         <div className="flex flex-col h-full">
-          {/* Header */}
           <div className="p-6 border-b border-gray-800">
             <div className="flex items-center justify-between">
               <h1 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
@@ -65,7 +61,6 @@ export default function AdminSidebar() {
             </div>
           </div>
 
-          {/* Navigation */}
           <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
             {menuItems.map((item) => {
               const isActive = pathname === item.href;
@@ -89,7 +84,6 @@ export default function AdminSidebar() {
             })}
           </nav>
 
-          {/* Logout */}
           <div className="p-4 border-t border-gray-800">
             <button
               onClick={handleLogout}
@@ -102,7 +96,6 @@ export default function AdminSidebar() {
         </div>
       </aside>
 
-      {/* Mobile Overlay */}
       {isMobileOpen && (
         <div 
           className="lg:hidden fixed inset-0 bg-black/50 z-30"
