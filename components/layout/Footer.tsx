@@ -171,7 +171,7 @@ export default function Footer() {
           All Rights Reserved.
         </p>
 
-        <p className="text-xs text-zinc-400">
+        {/* <p className="text-xs text-zinc-400">
           Designed &amp; Developed by{" "}
           <span className="font-semibold text-amber-400">
             Mir Aaqib Bashir
@@ -183,7 +183,7 @@ export default function Footer() {
           >
             +91 9596523404
           </a>
-        </p>
+        </p> */}
       </div>
     </footer>
   );

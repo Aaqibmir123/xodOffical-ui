@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Quote, Star, ChevronLeft, ChevronRight } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { sectionContentAPI, testimonialsAPI, type SectionContent, type Testimonial } from "@/lib/api";
@@ -215,4 +215,4 @@ export default function Testimonials() {
       </ScrollReveal>
     </section>
   );
-}
+} 
